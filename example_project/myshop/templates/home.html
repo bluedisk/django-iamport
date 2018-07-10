@@ -1,0 +1,17 @@
+{% extends 'site_base.html' %}
+
+{% block content %}
+<div class="container">
+
+<h2>Django Iamport Demo</h2><br />
+
+    <div class="center-block" style="width:300px;">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="결제하기" />
+        </form>
+    </div>
+</div>
+
+{% endblock %}

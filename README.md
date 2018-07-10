@@ -52,7 +52,7 @@ urlpatterns = [
 
 ```
 
-4. Payment 모델 상속하기
+5. Payment 모델 상속하기
 Payment 모델을 상속 받아서 실제로 사용할 결제 정보 모델을 만들어야 됩니다.
 Payment는 다음과 같이 추상 모델로 선언 되어 있습니다.
 ```python
@@ -79,6 +79,8 @@ class Payment(models.Model):
     def on_success(self):
         raise NotImplementedError()
 ```
+
+Payment 추상 모델을 상속 받은 다음 필요한 필드들을 추가해서 사용자 모델을 만듭니다.
 
 Payment를 상속받은 예제
 ```python
@@ -127,7 +129,12 @@ class OrderPayment(Payment):
 
 ```
 
-5. Template 사용자화 하기
+6. 결제 시작하기
+상속받은 모델(여기선 OrderPayment)의 인스턴스를 생성, 저장한 후 해당 pk를 args로 
+'payment:pay' 뷰를 호출하면 결제 프로세스가 진행 됩니다.
+
+
+7. Template 사용자화 하기
 모든 뷰 템플릿은 templates/site_base.html 를 상속 합니다.
 site_base.html를 Override해서 사용자 템플릿을 선언하시면 됩니다.
 

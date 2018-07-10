@@ -92,4 +92,8 @@ def update(request, payment_id):
 
 def result(request, payment_id):
     payment = get_object_or_404(get_payment_model(), pk=payment_id)
-    return render(request, 'payment/result.html', {'payment': payment})
+
+    home_url = payment.get_home_url() or '/'
+    retry_url = payment.get_retry_url()
+
+    return render(request, 'payment/result.html', {'payment': payment, 'home_url': home_url, 'retry_url': retry_url})

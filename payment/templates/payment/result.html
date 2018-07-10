@@ -1,4 +1,4 @@
-{% extends "site_base.html" %}
+{% extends "payment/payment_base.html" %}
 {% load staticfiles %}
 {% load humanize %}
 
@@ -41,14 +41,14 @@
                         {% if payment.pay_result != 'success' %}
                         <div class="row">
                             <div class="col-xs-8">
-                            <a href="{% url 'pay' payment.pay_type payment.order.pk %}" class="btn btn-lg btn-custom btn-block pay">다시 결제 시도하기</a>
+                            <a href="{{ retry_url }}" class="btn btn-lg btn-custom btn-block pay">다시 결제 시도하기</a>
                             </div>
                             <div class="col-xs-4">
-                            <a href="{% url 'my' %}" class="btn btn-lg btn-danger btn-block pay">나가기</a>
+                            <a href="{{ home_url }}" class="btn btn-lg btn-danger btn-block pay">나가기</a>
                             </div>
                         </div>
                         {% else %}
-                        <a href="{% url 'my' %}" class="btn btn-lg btn-custom btn-block pay">확인</a>
+                        <a href="{{ home_url }}" class="btn btn-lg btn-primary btn-block pay">확인</a>
                         {% endif %}
                     </div>
                 </div>
