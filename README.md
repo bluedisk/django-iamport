@@ -4,30 +4,43 @@ Iamport Application for Django
 장고용 아임포트 포팅 입니다.
 아직 카드 결제만 동작 확인 되었습니다.
 
+PyPi 설치는 안정화 버전 이후로 예정 중입니다.
+
 # Install
 1. git clone
 2. payment directory를 프로젝트로 복사
 3. setting.py 수정 
-```
+```python
+
+INSTALLED_APPS = [
+...
+
+
+    'payment',
+
+...
+
+
 PAYMENT_MERCHANT_ID = '아임포트에서 발급받은 상점 ID'
 PAYMENT_MODEL = 'shop.OrderPayment' # Payment를 상속 받은 주문 모델
 
 # 아임포트 전달 파라메터(그대로 아임포트 모듈에 전달 됩니다)
-# IMP.request_pay() 파라메터 : https://github.com/iamport/iamport-manual/blob/master/%EC%9D%B8%EC%A6%9D%EA%B2%B0%EC%A0%9C/README.md
+# IMP.request_pay() 파라메터 : 
 
 PAYMENT_CONFIG = { 
     'company': '우리 회사', # PG표기 회사명 
-    'pg': 'html5_inicis',a  # PG 종류 (아임포트 설정)
+    'pg': 'html5_inicis',  # PG 종류 (아임포트 설정)
     'pay_method': 'card'    # 결제 방법
 }
 PAYMENT_REST_KEY = '아임포트에서 발급 받은 REST KEY'
 PAYMENT_REST_SECRET = '아임포트에서 발급 받은 REST SECRET'
 ```
+파라메터는 [IMP.request_pay() 파라메터](https://github.com/iamport/iamport-manual/blob/master/%EC%9D%B8%EC%A6%9D%EA%B2%B0%EC%A0%9C/README.md) 참조)
 
 4. URL 선언 포함하기
 루트 urls.py 상에 다음 라인 포함
 
-```
+```python 
 urlpatterns = [
 
     ...
@@ -42,7 +55,7 @@ urlpatterns = [
 4. Payment 모델 상속하기
 Payment 모델을 상속 받아서 실제로 사용할 결제 정보 모델을 만들어야 됩니다.
 Payment는 다음과 같이 추상 모델로 선언 되어 있습니다.
-```
+```python
 class Payment(models.Model):
 
     class Meta:
@@ -68,7 +81,7 @@ class Payment(models.Model):
 ```
 
 Payment를 상속받은 예제
-```
+```python
 class OrderPayment(Payment):
 
     class Meta:
@@ -121,8 +134,8 @@ site_base.html를 Override해서 사용자 템플릿을 선언하시면 됩니�
 * 주의 : 서브 템플릿들은 jQuery가 site_base.html 상에 포함된것으로 간주합니다.
 
 # TODO
-~~- REST prepare call~~
-~~- card~~
+- ~~REST prepare call~~
+- ~~card~~
 - notification
 - vbank
 - 후처리 실패시 처리 
