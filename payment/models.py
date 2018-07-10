@@ -39,10 +39,6 @@ class Payment(models.Model):
 
     receipt_url = models.URLField('영수증 URL', null=True, blank=True)
 
-    @staticmethod
-    def from_order(order):
-        raise NotImplementedError()
-
     def on_success(self):
         raise NotImplementedError()
 

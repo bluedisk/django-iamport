@@ -1,0 +1,6 @@
+include LICENSE
+include README.md
+
+prune example_project
+
+recursive-include payment *.html
