@@ -1,0 +1,57 @@
+{% extends "site_base.html" %}
+{% load staticfiles %}
+{% load humanize %}
+
+{% block content %}
+    <div class="pay-body">
+        <div class="container">
+                <div class="panel panel-default modal-dialog">
+
+                    <div class="panel-body text-center">
+                        <h1>결제 결과</h1>
+
+                        <dl class="dl-horizontal mt60 mb60">
+                            <dt class="mb20">
+                               결제 결과
+                            </dt>
+                            {% if payment.pay_result != 'success' %}
+                            <dd class="text-danger"><strong>{{ payment.get_pay_result_display }} </strong> {{ payment.imp_result }}</dd>
+                            {% else %}
+                            <dd class="text-success"><strong>{{ payment.get_pay_result_display }}</strong></dd>
+                            {% endif %}
+                            <dt>
+                               결제 내용
+                            </dt>
+                            <dd>
+                                {{ payment.name }}
+                            </dd>
+                            <dt>
+                               결제 금액
+                            </dt>
+                            <dd>
+                                {{ payment.amount|intcomma }} 원
+                            </dd>
+                            <dt class="mt20">
+                               고객명
+                            </dt>
+                            <dd>
+                                {{ payment.buyer_name }}
+                            </dd>
+                        </dl>
+                        {% if payment.pay_result != 'success' %}
+                        <div class="row">
+                            <div class="col-xs-8">
+                            <a href="{% url 'pay' payment.pay_type payment.order.pk %}" class="btn btn-lg btn-custom btn-block pay">다시 결제 시도하기</a>
+                            </div>
+                            <div class="col-xs-4">
+                            <a href="{% url 'my' %}" class="btn btn-lg btn-danger btn-block pay">나가기</a>
+                            </div>
+                        </div>
+                        {% else %}
+                        <a href="{% url 'my' %}" class="btn btn-lg btn-custom btn-block pay">확인</a>
+                        {% endif %}
+                    </div>
+                </div>
+        </div>
+    </div>
+{% endblock %}

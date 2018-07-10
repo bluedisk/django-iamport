@@ -1,0 +1,62 @@
+{% extends "site_base.html" %}
+{% load staticfiles %}
+{% load humanize %}
+
+{% block scripts %}
+    <script src="https://service.iamport.kr/js/iamport.payment-1.1.5.js" type="text/javascript"></script>
+    <!-- iamport -->
+    <script>
+        /* global IMP */
+        IMP.init('{{ merchant_id }}');
+
+        /* global jQuery */
+        jQuery(function($) {
+            $('.pay').on('click', function(e) {
+                e.preventDefault();
+
+                IMP.request_pay({{ payment_data_json }}, function(rsp) {
+                    location.href = '{{ payment_data.m_redirect_url }}' +
+                        '?imp_uid=' + rsp.imp_uid +
+                        '&merchant_uid=' + rsp.merchant_uid;
+                });
+            });
+        });
+    </script>
+    <!-- import end -->
+{% endblock %}
+
+{% block content %}
+    <div class="pay-body pay-bg">
+        <div class="container">
+                <div class="panel panel-default modal-dialog">
+
+                    <div class="panel-body text-center">
+                        <h1>결제 진행</h1>
+
+                        <dl class="dl-horizontal mt60 mb60">
+                            <dt>
+                               결제 내용
+                            </dt>
+                            <dd>
+                                {{ payment.name }}
+                            </dd>
+                            <dt>
+                               결제 금액
+                            </dt>
+                            <dd>
+                                {{ payment.amount|intcomma }} 원
+                            </dd>
+                            <dt class="mt20">
+                               고객명
+                            </dt>
+                            <dd>
+                                {{ payment.buyer_name }}
+                            </dd>
+                        </dl>
+
+                        <button class="btn btn-lg btn-custom btn-block pay">결제 하기</button>
+                    </div>
+                </div>
+        </div>
+    </div>
+{% endblock %}
