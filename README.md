@@ -23,6 +23,22 @@ PAYMENT_CONFIG = {
 PAYMENT_REST_KEY = '아임포트에서 발급 받은 REST KEY'
 PAYMENT_REST_SECRET = '아임포트에서 발급 받은 REST SECRET'
 ```
+
+4. URL 선언 포함하기
+루트 urls.py 상에 다음 라인 포함
+
+```
+urlpatterns = [
+
+    ...
+
+    path('payment/', include('payment.urls')),
+  
+    ...
+]
+
+```
+
 4. Payment 모델 상속하기
 Payment 모델을 상속 받아서 실제로 사용할 결제 정보 모델을 만들어야 됩니다.
 Payment는 다음과 같이 추상 모델로 선언 되어 있습니다.
@@ -97,6 +113,12 @@ class OrderPayment(Payment):
         self.order.save()
 
 ```
+
+5. Template 사용자화 하기
+모든 뷰 템플릿은 templates/site_base.html 를 상속 합니다.
+site_base.html를 Override해서 사용자 템플릿을 선언하시면 됩니다.
+
+* 주의 : 서브 템플릿들은 jQuery가 site_base.html 상에 포함된것으로 간주합니다.
 
 # TODO
 ~~- REST prepare call~~
