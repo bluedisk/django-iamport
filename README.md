@@ -7,8 +7,8 @@ Iamport Application for Django
 ~~PyPi 설치는 안정화 버전 이후로 예정 중입니다.~~
 
 # Install
-1. pip install django-iamport
-2. setting.py 수정 
+### 1. pip install django-iamport
+### 2. setting.py 수정 
 ```python
 
 INSTALLED_APPS = [
@@ -38,7 +38,7 @@ PAYMENT_CONFIG = {
 ```
 파라메터는 [IMP.request_pay() 파라메터](https://github.com/iamport/iamport-manual/blob/master/%EC%9D%B8%EC%A6%9D%EA%B2%B0%EC%A0%9C/README.md) 참조)
 
-3. URL 선언 포함하기
+### 3. URL 선언 포함하기
 루트 urls.py 상에 다음 라인 포함
 
 ```python 
@@ -53,7 +53,7 @@ urlpatterns = [
 
 ```
 
-4. Payment 모델 상속하기
+### 4. Payment 모델 상속하기
 Payment 모델을 상속 받아서 실제로 사용할 결제 정보 모델을 만들어야 됩니다.
 Payment는 다음과 같이 추상 모델로 선언 되어 있습니다.
 ```python
@@ -138,7 +138,7 @@ class OrderPayment(Payment):
 
 ```
 
-5. 결제 시작하기
+### 5. 결제 시작하기
 상속받은 모델(여기선 OrderPayment)의 인스턴스를 생성, 저장한 후 해당 pk를 args로 
 'payment:pay' 뷰를 호출하면 결제 프로세스가 진행 됩니다.
 
@@ -150,7 +150,7 @@ def pay_start(request):
 ```
 
 
-6. Template 사용자화 하기
+### 6. Template 사용자화 하기
 모든 뷰 템플릿은 templates/site_base.html 를 상속 합니다.
 site_base.html를 Override해서 사용자 템플릿을 선언하시면 됩니다.
 
