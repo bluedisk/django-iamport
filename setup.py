@@ -7,15 +7,11 @@ https://github.com/pypa/sampleproject
 
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
-# To use a consistent encoding
-from codecs import open
-from os import path
+import os
 
-here = path.abspath(path.dirname(__file__))
-
-# Get the long description from the README file
-with open(path.join(here, 'README.md'), encoding='utf-8') as f:
-    long_description = f.read()
+def read(file_name):
+    with open(os.path.join(os.path.dirname(__file__), file_name)) as f:
+        return f.read()
 
 setup(
     name='django-iamport',
@@ -24,9 +20,8 @@ setup(
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
     version='0.2.0',
-
     description='Iamport implementation for Django 2+',
-    long_description=long_description,
+    long_description=read('README.rst'),
 
     # The project's main homepage.
     url='https://github.com/bluedisk/django-iamport',
