@@ -1,31 +1,47 @@
 # Django-Iamport
-Iamport Application for Django
+#### Iamport Application for Django
 
 장고용 아임포트 포팅 입니다.
-아직 카드 결제만 동작 확인 되었습니다.
+아직 카드 결제만 구현 되었습니다.
+취소 처리와 가상계좌등은 제가 필요한 시점까지는 만들지 않을 예정입니다.
 
-~~PyPi 설치는 안정화 버전 이후로 예정 중입니다.~~
+요청 주시는 분이 많으시면 좀 더 빨리 진행 할 수도 있습니다 :)
 
-# Install
-### 1. pip install django-iamport
-### 2. setting.py 수정 
+
+## TODO
+- ~~REST prepare call~~
+- ~~card~~
+- notification
+    - 카드 결제 이중 검증 (REST + Notification)
+    - 취소처리
+- vbank
+- 후처리 실패시 처리 
+- 다중 PG 지원
+- 다중 결제 모델 지원 
+
+## Setup
+### Install
+```bash
+$ pip install django-iamport
+```
+
+### setting.py 수정 
 ```python
 
 INSTALLED_APPS = [
 ...
 
-
-    'payment.apps.PaymentConfig',
+    'payment',
 
 ...
 
 
-PAYMENT_MERCHANT_ID = '아임포트에서 발급받은 상점 ID'
+PAYMENT_MERCHANT_ID='아임포트에서 발급받은 상점 ID'
 
-PAYMENT_REST_KEY = '아임포트에서 발급 받은 REST KEY'
-PAYMENT_REST_SECRET = '아임포트에서 발급 받은 REST SECRET'
+PAYMENT_REST_KEY='아임포트에서 발급 받은 REST KEY'
+PAYMENT_REST_SECRET='아임포트에서 발급 받은 REST SECRET'
 
-PAYMENT_MODEL = 'shop.OrderPayment' # Payment를 상속 받은 주문 모델
+PAYMENT_MODEL='shop.OrderPayment'  # Payment를 상속 받은 주문 모델
 
 # 아임포트 전달 파라메터(그대로 아임포트 모듈에 전달 됩니다)
 # IMP.request_pay() 파라메터 : 
@@ -36,7 +52,7 @@ PAYMENT_CONFIG = {
     'pay_method': 'card'    # 결제 방법
 }
 ```
-파라메터는 [IMP.request_pay() 파라메터](https://github.com/iamport/iamport-manual/blob/master/%EC%9D%B8%EC%A6%9D%EA%B2%B0%EC%A0%9C/README.md) 참조)
+파라메터는 [IMP.request_pay() 파라메터](https://github.com/iamport/iamport-manual/blob/master/%EC%9D%B8%EC%A6%9D%EA%B2%B0%EC%A0%9C/README.md) 참조
 
 ### 3. URL 선언 포함하기
 루트 urls.py 상에 다음 라인 포함
@@ -79,6 +95,7 @@ class Payment(models.Model):
 
     def on_success(self):
         raise NotImplementedError()
+
 ```
 
 Payment 추상 모델을 상속 받은 다음 필요한 필드들을 추가해서 사용자 모델을 만듭니다.
@@ -139,7 +156,7 @@ class OrderPayment(Payment):
 ```
 
 ### 5. 결제 시작하기
-상속받은 모델(여기선 OrderPayment)의 인스턴스를 생성, 저장한 후 해당 pk를 args로 
+상속받은 모델(이 예제에선 OrderPayment)의 인스턴스를 생성, 저장한 후 해당 pk를 args로 
 'payment:pay' 뷰를 호출하면 결제 프로세스가 진행 됩니다.
 
 ex:
@@ -154,14 +171,4 @@ def pay_start(request):
 모든 뷰 템플릿은 templates/site_base.html 를 상속 합니다.
 site_base.html를 Override해서 사용자 템플릿을 선언하시면 됩니다.
 
-* 주의 : 서브 템플릿들은 jQuery가 site_base.html 상에 포함된것으로 간주합니다.
-
-# TODO
-- ~~REST prepare call~~
-- ~~card~~
-- notification
-- vbank
-- 후처리 실패시 처리 
-- 다중 PG 지원
-- 다중 결제 모델 지원 
-
+* 주의 : Payment 내부에 템플릿들은 jQuery가 site_base.html 상에 포함된것으로 간주합니다.
