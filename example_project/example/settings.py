@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
 
-    'myshop.apps.MyShopConfig',
-    'payment.apps.PaymentConfig'
+    'myshop',
+    'payment'
 ]
 
 MIDDLEWARE = [

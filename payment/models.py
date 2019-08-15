@@ -28,6 +28,7 @@ class Payment(models.Model):
         ('ready', '결제 대기'),
         ('success', '결제 성공'),
         ('failed', '결제 실패'),
+        ('canceled', '결제 취소'),
         ('error', '비정상')
     )
     pay_result = models.CharField('결제 결과', max_length=30, choices=PAY_RESULT_CHOICES, default='ready')
@@ -40,6 +41,9 @@ class Payment(models.Model):
     receipt_url = models.URLField('영수증 URL', null=True, blank=True)
 
     def on_success(self):
+        raise NotImplementedError()
+
+    def on_cancel(self):
         raise NotImplementedError()
 
     def get_home_url(self):

@@ -6,6 +6,7 @@ from example import settings
 from payment.models import Payment
 
 
+# 쇼핑몰 내부적으로 사용할 주문 모델
 class Order(models.Model):
     class Meta:
         verbose_name = "주문"
@@ -25,14 +26,15 @@ class Order(models.Model):
     PAY_STATUS_CHOCIES = (
         ('ready', '결제 대기'),
         ('confirmed', '결제 완료'),
+        ('canceled', '결제 취소'),
     )
     pay_status = models.CharField('결제 상태', max_length=30, default='ready', choices=PAY_STATUS_CHOCIES)
 
     created_at = models.DateTimeField('생성일자', auto_now_add=True)
 
 
+# Django-iamport와 연동을 위해 사용할 모델
 class OrderPayment(Payment):
-
     class Meta:
         verbose_name = "제품 결제"
         verbose_name_plural = "제품 결제 목록"
@@ -69,8 +71,11 @@ class OrderPayment(Payment):
 
     # 결제 완료 후처리 하기(완료 시 호출 됩니다)
     def on_success(self):
-        self.order.pay_status = 'confirmed'
-        self.order.save()
+        self.order.update(pay_status='confirmed')
+
+    # 취소 발생 시 쇼핑몰에서 동작시킬 처리
+    def on_cancel(self):
+        self.order.update(pay_status='canceled')  # Payment의 상태는 자동으로 변경됨
 
     # 결제 재시도 URL
     def get_retry_url(self):
@@ -79,4 +84,3 @@ class OrderPayment(Payment):
     # 결제 후 이동 할 Home URL
     def get_home_url(self):
         return '/'
-
